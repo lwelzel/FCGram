@@ -6,8 +6,15 @@ The matrices enable efficient extension of non-periodic functions to periodic on
 
 ## Example Usage
 
+### Computing and saving FC Gram matrices to '.mat' files
 ```matlab
 FCGram_Matrices(4, 25, 12, 25, 20, 2, 256)
+```
+
+### Writing FC Gram matrices in '.mat' files to '.pt' files.
+This requires having scipy and pytorch installed.
+```bash
+python utils.py
 ```
 
 ## Parameters
