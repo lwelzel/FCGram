@@ -3,6 +3,7 @@ from typing import Tuple
 
 import scipy.io
 import torch
+import numpy as np
 from numpy import ndarray as Arr
 
 def _read_mat_file(file_path: Path) -> Tuple[Arr, Arr]:
@@ -84,5 +85,31 @@ def convert_all_mat_to_torch(src_dir: Path, dst_dir: Path) -> None:
             dst_file.with_suffix(".pt")
         )
 
+def convert_all_mat_to_numpy(src_dir: Path, dst_dir: Path) -> None:
+    """
+    Convert all `.mat` files in a directory to `.npz` NumPy files.
+
+    Args:
+        src_dir (Path): Source directory containing .mat files.
+        dst_dir (Path): Destination directory to save .npz files.
+
+    Notes:
+        - Destination directory will be created if it does not exist.
+    """
+    src_dir = Path(src_dir)
+    dst_dir = Path(dst_dir)
+    dst_dir.mkdir(parents=True, exist_ok=True)
+
+    for mat_file in src_dir.glob("FCGram_data_d*_C*.mat"):
+        ArQr, AlQl = _read_mat_file(mat_file)
+
+        dst_file = dst_dir / mat_file.name
+        np.savez(
+            dst_file.with_suffix(".npz"),
+            ArQr=ArQr,
+            AlQl=AlQl
+        )
+
 if __name__ == "__main__":
     convert_all_mat_to_torch("./FCGram_matrices", "./FCGram_matrices_torch")
+    convert_all_mat_to_numpy("./FCGram_matrices", "./FCGram_matrices_numpy")
